@@ -48,8 +48,8 @@ class FormScreen extends StatelessWidget {
     if (input == null || input.isEmpty) {
       return 'Email darf nicht leer sein';
     }
-    if (input.length <= 5) {
-      return 'Email muss mindestens 5 Zeichen haben';
+    if (input.length <= 3) {
+      return 'Email muss mindestens 3 Zeichen haben';
     }
     if (!input.contains('@')) {
       return 'Email muss das Zeichen "@" enthalten';

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
 class FormScreen extends StatelessWidget {
-  // Attribute
-  // (keine)
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  // GlobalKey zur Identifikation der Form
+  final formKey = GlobalKey<FormState>();
+  final String email = '';
+  final String password = '';
 
   // Konstruktor
-  const FormScreen({super.key});
+  FormScreen({super.key});
 
   // Methoden
   @override
@@ -14,27 +18,27 @@ class FormScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Form(
+          key: formKey,
           child: Column(children: [
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text("Email"),
-              ),
-              autovalidateMode: AutovalidateMode.always,
-              validator: validateEmail,
-            ),
+            buildEmail(),
             const SizedBox(height: 8),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text("Passwort"),
-              ),
-              autovalidateMode: AutovalidateMode.always,
-              validator: validatePw,
-            ),
+            buildPassword(),
             const SizedBox(height: 32),
             FilledButton(
-              onPressed: () {},
+              onPressed: () {
+                if (formKey.currentState?.validate() ?? false) {
+                  // Die Form ist valide
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Form ist valide!')),
+                  );
+                } else {
+                  // Die Form ist nicht valide
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Bitte korrigiere deine Eingaben.')),
+                  );
+                }
+              },
               child: const Text("Login"),
             ),
           ]),
@@ -43,12 +47,21 @@ class FormScreen extends StatelessWidget {
     );
   }
 
+  Widget buildEmail() => TextFormField(
+        controller: emailController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          label: Text("Email"),
+        ),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: validateEmail,
+      );
+
   String? validateEmail(String? input) {
-    // TODO: implementiere hier die Logik, die im Task Sheet beschrieben ist
     if (input == null || input.isEmpty) {
       return "Email darf nicht leer sein";
     }
-    if (input.length < 6) {
+    if (input.length < 5) {
       return "Email muss mindestens aus 6 Zeichen bestehen";
     }
     if (!input.contains("@")) {
@@ -60,8 +73,17 @@ class FormScreen extends StatelessWidget {
     return null;
   }
 
+  Widget buildPassword() => TextFormField(
+        controller: passwordController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          label: Text("Passwort"),
+        ),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: validatePw,
+      );
+
   String? validatePw(String? input) {
-    // TODO: implementiere hier die Logik, die im Task Sheet beschrieben ist
     if (input == null || input.isEmpty) {
       return "Passwort darf nicht leer sein";
     }

@@ -5,8 +5,6 @@ class FormScreen extends StatelessWidget {
   final passwordController = TextEditingController();
   // GlobalKey zur Identifikation der Form
   final formKey = GlobalKey<FormState>();
-  final String email = '';
-  final String password = '';
 
   // Konstruktor
   FormScreen({super.key});
@@ -29,7 +27,7 @@ class FormScreen extends StatelessWidget {
                 if (formKey.currentState?.validate() ?? false) {
                   // Die Form ist valide
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Form ist valide!')),
+                    const SnackBar(content: Text('Eingaben sind korrekt!')),
                   );
                 } else {
                   // Die Form ist nicht valide
@@ -61,7 +59,7 @@ class FormScreen extends StatelessWidget {
     if (input == null || input.isEmpty) {
       return "Email darf nicht leer sein";
     }
-    if (input.length < 5) {
+    if (input.length <= 5) {
       return "Email muss mindestens aus 6 Zeichen bestehen";
     }
     if (!input.contains("@")) {

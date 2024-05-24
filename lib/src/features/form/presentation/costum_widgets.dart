@@ -1,5 +1,6 @@
 // custom_widgets.dart
 import 'package:flutter/material.dart';
+import 'package:input_validation/src/features/form/presentation/form_screen.dart';
 
 Widget buildEmail(TextEditingController emailController,
         String? Function(String?) validateEmail) =>
@@ -31,8 +32,12 @@ Widget buildLoginButton(BuildContext context, GlobalKey<FormState> formKey) =>
         if (formKey.currentState?.validate() ?? false) {
           // Die Form ist valide
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Eingaben sind korrekt!')),
+            const SnackBar(
+              content: Text('Eingaben sind korrekt!'),
+            ),
           );
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => FormScreen()));
         } else {
           // Die Form ist nicht valide
           ScaffoldMessenger.of(context).showSnackBar(
